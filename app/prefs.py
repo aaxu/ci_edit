@@ -22,13 +22,13 @@ import traceback
 importStartTime = time.time()
 
 commentColorIndex = 2
-defaultColorIndex = 0
+defaultColorIndex = 18
 foundColorIndex = 32
 keywordsColorIndex = 21
 selectedColor = 64 # Active find is a selection.
 specialsColorIndex = 20
 stringColorIndex = 5
-outsideOfBufferColorIndex = 0
+outsideOfBufferColorIndex = 128
 
 kNonMatchingRegex = r'^\b$'
 kReNonMatching = re.compile(kNonMatchingRegex)
@@ -257,14 +257,13 @@ prefs = {
       ],
     },
     'c_preprocessor': {
-      'begin': '#',
-      'end': r'\n',
-      'escaped': r'\\\n',
+      'begin': r'^#',
+      'end': r'(?<!\\)\n',
       'indent': '  ',
-      'keywords': [
-        '#\s*?define', '#\s*?defined', '#\s*?elif', '#\s*?endif',
-        '#\s*?if', '#\s*?ifdef', '#\s*?ifndef', '#\s*?include',
-        '#\s*?undef',
+      'special': [
+        r'^\s*#\s*?define\b', r'^\s*#\s*?defined\b', r'^\s*#\s*?elif\b',
+        r'^\s*#\s*?endif\b', r'^\s*#\s*?if\b', r'^\s*#\s*ifdef\b',
+        r'^\s*#\s*?ifndef\b', r'^\s*#\s*?include\b', r'^\s*#\s*?undef\b',
       ],
       #'contains': ['file_path_quoted', 'file_path_bracketed'],
     },
