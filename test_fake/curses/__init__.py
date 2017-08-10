@@ -1,7 +1,4 @@
-#!/usr/bin/python
-# TODO(dschuyler): !/usr/bin/python -O
-
-# Copyright 2016 Google Inc.
+# Copyright 2017 Google Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,15 +13,5 @@
 # limitations under the License.
 
 
-import sys
-
-
-if '--test' in sys.argv:
-  import unit_tests
-  if unit_tests.runTests(True) != 0:
-    sys.exit(-1)
-  sys.exit(0)
-
-if __name__ == '__main__':
-  import app.ci_program
-  app.ci_program.run_ci()
+from curses import *
+#__all__ = ["ascii"]

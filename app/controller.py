@@ -26,6 +26,7 @@ class Controller:
     self.host = host
     self.commandDefault = None
     self.commandSet = None
+    self.textBuffer = None
     self.name = name
 
   def changeToConfirmClose(self):
@@ -66,8 +67,11 @@ class Controller:
     self.host.changeFocusTo(self.host.interactiveSaveAs)
 
   def doCommand(self, ch):
+    # Check the commandSet for the input with both its string and integer
+    # representation.
     self.savedCh = ch
-    cmd = self.commandSet.get(ch)
+    cmd = (self.commandSet.get(ch) or
+          self.commandSet.get(app.curses_util.cursesKeyName(ch)))
     if cmd:
       cmd()
     else:
@@ -127,19 +131,23 @@ class Controller:
       self.changeToConfirmOverwrite()
       return
     tb.fileWrite()
+    # TODO(dschuyler): Is there a deeper issue here that necessitates saving
+    # the message? Does this only need to wrap the changeToHostWindow()?
+    saveMessage = tb.message  # Store the save message so it is not overwritten.
     if self.host.userIntent == 'quit':
       self.quitOrSwitchToConfirmQuit()
       return
     if self.host.userIntent == 'close':
       self.closeHostFile()
     self.changeToHostWindow()
+    tb.message = saveMessage  # Restore the save message.
 
   def quitOrSwitchToConfirmQuit(self):
     app.log.debug()
     tb = self.host.textBuffer
     self.host.userIntent = 'quit'
     app.history.set(['files', tb.fullPath, 'cursor'],
-        (self.host.cursorRow, self.host.cursorCol))
+        (self.host.textBuffer.penRow, self.host.textBuffer.penCol))
     if tb.isDirty():
       self.changeToConfirmQuit()
       return
@@ -165,6 +173,10 @@ class Controller:
   def saveEventChangeToHostWindow(self, ignored=1):
     curses.ungetch(self.savedCh)
     self.host.changeFocusTo(self.host)
+
+  def setTextBuffer(self, textBuffer):
+    app.log.info(textBuffer)
+    self.textBuffer = textBuffer
 
   def unfocus(self):
     pass
