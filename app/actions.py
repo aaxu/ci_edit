@@ -562,6 +562,22 @@ class Actions(app.mutator.Mutator):
     self.__skipUpdateScroll = True
     self.redo()
 
+  def cursorNeutralPageDown(self):
+    self.doSelectionMode(app.selectable.kSelectionNone)
+    self.cursorPageDown()
+
+  def cursorNeutralPageUp(self):
+    self.doSelectionMode(app.selectable.kSelectionNone)
+    self.cursorPageUp()
+
+  def cursorSelectPageDown(self):
+    self.doSelectionMode(app.selectable.kSelectionCharacter)
+    self.cursorPageDown()
+
+  def cursorSelectPageUp(self):
+    self.doSelectionMode(app.selectable.kSelectionCharacter)
+    self.cursorPageUp()
+
   def cursorScrollToMiddle(self):
     maxRow, maxCol = self.view.rows, self.view.cols
     rowDelta = min(max(0, len(self.lines)-maxRow),
