@@ -275,12 +275,20 @@ class Actions(app.mutator.Mutator):
     Returns:
       None.
     """
-    for index in range(len(self.bookmarks)):
+    __getitem__ = lambda x, index: self.bookmarks[index][0][1]
+    __len__ = lambda x: len(self.bookmarks)
+    functions = dict(__getitem__=__getitem__, __len__=__len__)
+    lowerLimits = type('', (object,), functions)()
+    begin = bisect.bisect_left(lowerLimits, upper)
+
+    # TODO(Androbin, aaxu): defer changes outside the screen
+    for index in range(begin, len(self.bookmarks)):
       bookmark = self.bookmarks[index]
       markRange = bookmark[0]
       if markRange[0] > upper:
         markRange = (markRange[0] + delta, markRange[1] + delta)
-      elif markRange[1] >= upper:
+      # elif markRange[1] >= upper:
+      else:
         markRange = (markRange[0], markRange[1] + delta)
       bookmark = (markRange, bookmark[1])
       self.bookmarks[index] = bookmark
