@@ -228,14 +228,14 @@ class Actions(app.mutator.Mutator):
     Removes bookmarks in the given line interval.
 
     Args:
-      upperRow: The upper line limit.
-      lowerRow: The lower line limit.
+      upperRow: The upper line limit, inclusive.
+      lowerRow: The lower line limit, inclusive.
 
     Returns:
       (boolean) Whether any bookmarks were removed.
     """
     if upperRow > lowerRow:
-      return
+      return False
     rangeList = self.bookmarks
     needle = app.bookmark.Bookmark(upperRow, lowerRow)
     # Find the left-hand index.
