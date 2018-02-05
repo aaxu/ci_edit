@@ -275,7 +275,7 @@ class Actions(app.mutator.Mutator):
     Returns:
       None.
     """
-    __getitem__ = lambda x, index: self.bookmarks[index][0][1]
+    __getitem__ = lambda x, index: self.bookmarks[index].end
     __len__ = lambda x: len(self.bookmarks)
     functions = dict(__getitem__=__getitem__, __len__=__len__)
     lowerLimits = type('', (object,), functions)()
@@ -284,14 +284,13 @@ class Actions(app.mutator.Mutator):
     # TODO(Androbin, aaxu): defer changes outside the screen
     for index in range(begin, len(self.bookmarks)):
       bookmark = self.bookmarks[index]
-      markRange = bookmark[0]
-      if markRange[0] > upper:
-        markRange = (markRange[0] + delta, markRange[1] + delta)
+      begin, end = bookmark.range
+      if begin > upper:
+        markRange = (begin + delta, end + delta)
       # elif markRange[1] >= upper:
       else:
-        markRange = (markRange[0], markRange[1] + delta)
-      bookmark = (markRange, bookmark[1])
-      self.bookmarks[index] = bookmark
+        markRange = (begin, end + delta)
+      bookmark.range = markRange
 
   def backspace(self):
     #app.log.info('backspace', self.penRow > self.markerRow)
