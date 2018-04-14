@@ -339,7 +339,6 @@ class Mutator(app.selectable.Selectable):
         # Combine new change with the existing tempChange.
         change = (change[0], addVectors(self.tempChange[1], change[1]))
         self.__undoChange(self.tempChange)
-        self.__tempChange = change
       if change in noOpInstructions:
         self.stallNextRedo = True
         self.processTempChange = False
