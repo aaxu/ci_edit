@@ -37,6 +37,9 @@ class TextBuffer(app.actions.Actions):
     self.fileEncoding = None
     self.lastChecksum = None
     self.lastFileSize = 0
+    # |firstUnsavedRedoIndex| is used to help the temp file saver determine
+    # where to start saving, so we don't have to save the entire redo chain.
+    self.firstUnsavedRedoIndex = 0
     self.bookmarks = []
     self.nextBookmarkColorPos = 0
 

@@ -355,6 +355,10 @@ class Mutator(app.selectable.Selectable):
       if self.redoIndex < self.savedAtRedoIndex:
         self.savedAtRedoIndex = -1
       self.redoChain = self.redoChain[:self.redoIndex]
+      # Update the first unsaved redo index.
+      if self.redoIndex < self.firstUnsavedRedoIndex:
+        self.firstUnsavedRedoIndex = self.redoIndex
+      # Handle tempChange.
       if self.tempChange:
         # If previous action was a cursor move, we can merge it with tempChange.
         if (len(self.redoChain) and self.redoChain[-1][0][0] == 'm' and

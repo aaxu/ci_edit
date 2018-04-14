@@ -843,6 +843,7 @@ class Actions(app.mutator.Mutator):
           'savedAtRedoIndexCompound', 0)
       self.redoIndex = self.savedAtRedoIndex
       self.oldRedoIndex = self.savedAtRedoIndex
+      self.firstUnsavedRedoIndex = self.savedAtRedoIndex
     if app.config.strict_debug:
       assert self.penRow < len(self.lines), self.penRow
       assert self.markerRow < len(self.lines), self.markerRow
